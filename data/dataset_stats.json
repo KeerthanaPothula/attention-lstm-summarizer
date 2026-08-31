@@ -1,0 +1,16 @@
+{
+  "dataset_name": "abisee/cnn_dailymail",
+  "dataset_version": "3.0.0",
+  "dataset_split_policy": "official predefined train/validation/test split (no custom re-split)",
+  "mode": "EXPERIMENTAL SUBSET",
+  "train_samples": 10000,
+  "validation_samples": 1000,
+  "test_samples": 1000,
+  "total_samples": 12000,
+  "vocab_size_configured": 20000,
+  "vocab_size_actual": 20000,
+  "max_input_length": 300,
+  "max_target_length": 60,
+  "random_seed": 42,
+  "preparation_time_seconds": 47.49
+}

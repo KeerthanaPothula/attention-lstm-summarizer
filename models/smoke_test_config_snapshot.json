@@ -1,0 +1,20 @@
+{
+  "dataset_mode": "EXPERIMENTAL SUBSET",
+  "train_samples": 10000,
+  "validation_samples": 1000,
+  "test_samples": 1000,
+  "vocab_size": 20000,
+  "max_input_length": 300,
+  "max_target_length": 60,
+  "embedding_dim": 128,
+  "lstm_units": 256,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "optimizer": "Adam",
+  "random_seed": 42,
+  "epochs_requested": 2,
+  "epochs_completed": 2,
+  "best_validation_loss": 8.0976243019104,
+  "training_time_seconds": 346.4,
+  "trainable_parameters": 11442465
+}

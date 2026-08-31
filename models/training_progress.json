@@ -1,0 +1,1 @@
+{"history": {"epoch": [1, 2], "train_loss": [7.4718330645332705, 7.067524841418281], "val_loss": [7.082668498158455, 6.862454429268837]}, "best_val_loss": 6.862454429268837, "patience_counter": 0, "next_epoch": 3, "cumulative_training_time_seconds": 4161.015842199326}

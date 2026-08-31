@@ -1,0 +1,11 @@
+tensorflow==2.19.0
+datasets
+pandas
+streamlit
+PyMuPDF
+Pillow
+pytesseract
+rouge-score
+nltk
+matplotlib
+scikit-learn
