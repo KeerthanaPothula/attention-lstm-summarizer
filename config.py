@@ -92,6 +92,10 @@ EARLY_STOPPING_PATIENCE = 3
 # Inference / decoding
 # ---------------------------------------------------------------------------
 BEAM_WIDTH = 3
+# Default decoding constraints for inference/summarizer.py.
+# Set SUPPRESS_UNK = False and NO_REPEAT_NGRAM_SIZE = 0 for plain greedy decoding.
+SUPPRESS_UNK = True
+NO_REPEAT_NGRAM_SIZE = 3
 
 # ---------------------------------------------------------------------------
 # Reproducibility
