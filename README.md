@@ -25,9 +25,7 @@ article tokens -> Embedding(128) -> LSTM encoder(256, full sequence + final h/c)
 | `training/train.py` | Training loop (Adam, early stopping, best-checkpoint saving, resumable) |
 | `training/evaluate.py` | Test-set ROUGE evaluation |
 
-Hyperparameters live in `config.py`: vocabulary 20,000, input length 300
-tokens, target length 60 tokens (including `<start>`/`<end>`), embedding 128,
-LSTM units 256, batch size 32, learning rate 1e-3, early-stopping patience 3.
+The checked-in `config.py` describes the GitHub checkout: vocabulary limit 20,000, input length 300 tokens, target length 60 tokens (including `<start>`/`<end>`), embedding dimension 128, LSTM units 256, batch size 32, learning rate 1e-3, and early-stopping patience 3. The separately recovered Colab checkpoint uses vocabulary limit 10,000, embedding dimension 256, and LSTM units 512. Its evaluation results below belong to that separate experiment, not the checked-in configuration.
 
 ## Dataset and split
 
@@ -109,15 +107,18 @@ the two tables.**
 
 ### Colab experiment (epoch-9 checkpoint, 2,000 test examples)
 
-These numbers were reported from the Colab run. The checkpoint and test set
-are on Google Drive, so the numbers **cannot be reproduced from this
-repository**. They are listed here as reported and are not recomputed.
+These numbers were regenerated in Colab using the recovered epoch-9
+checkpoint and the 2,000 saved test examples on Google Drive. The evaluation
+generated predictions with plain greedy decoding and with `<unk>` suppression
+plus trigram blocking, then calculated mean per-example ROUGE F1 using
+`rouge-score` with Porter stemming. The checkpoint and test artifacts remain
+in the Drive backup and are not committed to this repository.
 
 | Metric | Greedy | Greedy + `<unk>` suppression + trigram blocking |
 |---|---:|---:|
-| ROUGE-1 F1 | 0.1856 | 0.2651 |
+| ROUGE-1 F1 | 0.1857 | 0.2650 |
 | ROUGE-2 F1 | 0.0373 | 0.0550 |
-| ROUGE-L F1 | 0.1340 | 0.1757 |
+| ROUGE-L F1 | 0.1342 | 0.1758 |
 
 ### This checkout (epoch-2 checkpoint, 1,000 test examples)
 
@@ -158,6 +159,13 @@ Checks showing this comes from the undertrained checkpoint, not a decoding bug:
   trigrams blocked, decoding follows the same frequent-word path, and the six
   variants come from near-tied probabilities near the end of the sequence.
 
+The recovered Colab model's generated examples also show repetition and
+unsupported details. For example, a reference about medical marijuana produced
+an unrelated summary about government topics. A successful inference call means
+the checkpoint and decoding code run; it does not establish factual reliability.
+The improved decoding scores are lexical-overlap measurements, not correctness
+scores.
+
 ## Limitations
 
 - **ROUGE measures n-gram overlap, not correctness.** A higher ROUGE score
@@ -165,17 +173,18 @@ Checks showing this comes from the undertrained checkpoint, not a decoding bug:
   free of hallucinations. The decoding constraints remove `<unk>` tokens and
   repeated phrases, which raises overlap with the reference, but they do
   nothing to make the content more correct.
-- The Colab results cannot be reproduced from this repository: the epoch-9
-  checkpoint, the 100k/10k/2k data and the training history are not
-  included. The decoding code here implements the same two constraints, but
-  it has not been checked against the Colab code line by line, and the
-  ROUGE settings used in Colab (for example stemming) are not recorded here.
+- The Colab evaluation depends on the recovered checkpoint, tokenizer and
+  test artifacts stored in Google Drive; these artifacts are not committed to
+  this repository. The reported metrics were regenerated in Colab from those
+  artifacts, but a clean end-to-end rerun using only this repository has not
+  been verified.
 - The checkpoint in this checkout is undertrained (2 epochs on 10k
   examples) and does not produce input-dependent summaries.
 - Trigram blocking is a heuristic. It can also block legitimate repeats, such
   as a name that appears twice.
 - Decoding is greedy only; beam search is not implemented.
-- The vocabulary has 20,000 words and the model has no copy mechanism, so
+- The current checkout's vocabulary limit is 20,000 and its model has no
+  copy mechanism, so
   rare names and numbers become `<unk>`. Suppressing `<unk>` replaces them
   with some other word; it does not recover the missing word.
 - Articles are truncated to 300 tokens, so content later in long articles is
